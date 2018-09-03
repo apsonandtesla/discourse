@@ -104,7 +104,7 @@ class UsersController < ApplicationController
     attributes.delete(:username)
 
     if params[:user_fields].present?
-      attributes[:custom_fields] = {}
+      attributes[:custom_fields] ||= {}
 
       fields = UserField.all
       fields = fields.where(editable: true) unless current_user.staff?
@@ -1164,7 +1164,8 @@ class UsersController < ApplicationController
       :website,
       :dismissed_banner_key,
       :profile_background,
-      :card_background
+      :card_background,
+      custom_fields: User.editable_user_custom_fields
     ]
 
     permitted.concat UserUpdater::OPTION_ATTR
